@@ -96,7 +96,7 @@ def randomForestClassifier(X_train: pd.DataFrame, X_test: pd.DataFrame, y_train:
     report = classification_report(y_test, y_pred, output_dict=True)
     report_df = pd.DataFrame(report)
     print(classification_report(y_test, y_pred))
-    return model, report_df
+    return model, report_df, feature_list
 
 
 def adaBoostClassifier(X_train: pd.DataFrame, X_test: pd.DataFrame, y_train: pd.DataFrame, y_test: pd.DataFrame, n_feat: int):
@@ -158,7 +158,7 @@ def adaBoostClassifier(X_train: pd.DataFrame, X_test: pd.DataFrame, y_train: pd.
     report = classification_report(y_test, y_pred, output_dict=True)
     report_df = pd.DataFrame(report)
     print(classification_report(y_test, y_pred))
-    return model, report_df
+    return model, report_df, feature_list
 
 
 def xgboostClassifier(X_train: pd.DataFrame, X_test: pd.DataFrame, y_train: pd.DataFrame, y_test: pd.DataFrame, n_feat: int):
@@ -204,7 +204,7 @@ def xgboostClassifier(X_train: pd.DataFrame, X_test: pd.DataFrame, y_train: pd.D
     report = classification_report(y_test, y_pred, output_dict=True)
     report_df = pd.DataFrame(report)
     print(classification_report(y_test, y_pred))
-    return model, report_df
+    return model, report_df, feature_list
 
 
 def gradientBoostingRegressor(X_train: pd.DataFrame, X_test: pd.DataFrame, y_train: pd.DataFrame, y_test: pd.DataFrame, n_feat: int) -> Any:
@@ -298,7 +298,7 @@ def gradientBoostingRegressor(X_train: pd.DataFrame, X_test: pd.DataFrame, y_tra
     fig.tight_layout()
     plt.show()
 
-    return model, metrics
+    return model, metrics, feature_list
 
 
 def DecisionTree(X_train: pd.DataFrame, X_test: pd.DataFrame, y_train: pd.DataFrame, y_test: pd.DataFrame) -> Any:
