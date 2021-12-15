@@ -4,7 +4,50 @@ import numpy as np
 from sklearn import preprocessing
 
 
-def category_map(clickstream: pd.DataFrame):
+def add_revenue(clickstream: pd.DataFrame, purchase: pd.DataFrame) -> pd.DataFrame:
+    """Add total revenue and binary revenue as response variables
+
+    Args:
+        clickstream (pd.DataFrame): Clickstream data
+        purchase (pd.DataFrame): Purchase data
+
+    Returns:
+        pd.DataFrame: Feature table with response variables
+    """
+    purchase['revenue'] = purchase['price'] * purchase['quantity'] 
+    total_revenue = purchase.groupby(level=0).revenue.sum()
+    feature_table = clickstream.join(total_revenue).drop_duplicates()
+    feature_table['binary_revenue'] = feature_table.revenue.notna().astype(int)
+    feature_table['revenue'] = feature_table['revenue'].fillna(0)
+    return feature_table
+
+def total_number_purchases(feature_table: pd.DataFrame) -> pd.DataFrame:
+    """Total number of purchases by session ID
+
+    Args:
+        feature_table (pd.DataFrame): Features
+
+    Returns:
+        pd.DataFrame: Features with total number of purchases
+    """    
+    agg = feature_table.groupby(level=0).binary_revenue.sum()
+    agg = agg.rename('total_purchases')
+    feature_table = feature_table.join(agg)
+    return feature_table
+
+def category_map(clickstream: pd.DataFrame) -> pd.DataFrame:
+    """Category mapping based on the following logic:
+        - If an item has been clicked in the context of a promotion or special offer, then the value will be "S"
+        - If the item has been clicked under a regular category (i.e., sport), the value will be a number between 1 to 12.
+        - If the context was a brand (i.e., Nike, Adidas, ...), then the value will be an 8-10 digits number.
+        - "0" indicates a missing value
+
+    Args:
+        clickstream (pd.DataFrame): Clickstream data
+
+    Returns:
+        pd.DataFrame: Mapping of category
+    """    
     conditions = [(clickstream.category == 'S'),
                   (clickstream.category.isin([str(i) for i in np.arange(1,13,1)])),
                   (clickstream.category.str.match('\(|\)|\d{7}')),
