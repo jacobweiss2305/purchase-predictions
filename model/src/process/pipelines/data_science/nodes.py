@@ -114,7 +114,7 @@ def adaBoostClassifier(X_train: pd.DataFrame, X_test: pd.DataFrame, y_train: pd.
         n_feat (int): Top N features to select
 
     Returns:
-        RandomForestClassifier: scikit learn object
+        AdaBoostClassifier: scikit learn object
         pd.DataFrame: Model Evaluation Metrics
     """
     params = {
@@ -162,6 +162,24 @@ def adaBoostClassifier(X_train: pd.DataFrame, X_test: pd.DataFrame, y_train: pd.
 
 
 def xgboostClassifier(X_train: pd.DataFrame, X_test: pd.DataFrame, y_train: pd.DataFrame, y_test: pd.DataFrame, n_feat: int):
+    """XG Boost Classification model with recursive feature elimination.
+
+    Model Parameters:
+        n_estimators: 500
+        max_depth: 4
+        learning_rate: 0.01
+
+    Args:
+        X_train (pd.DataFrame): Feature training set
+        X_test (pd.DataFrame): Feature test set
+        y_train (pd.DataFrame): Response training set
+        y_test (pd.DataFrame): Response testing set
+        n_feat (int): Top N features to select
+
+    Returns:
+        XGBClassifier: scikit learn object
+        pd.DataFrame: Model Evaluation Metrics
+    """
     params = {
         "n_estimators": 500,
         "max_depth": 4,
