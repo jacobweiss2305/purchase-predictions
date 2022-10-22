@@ -1,5 +1,5 @@
 # purchase-predictions
-Predicting purchases from clickstream data
+Predicting purchases from clickstream data and wrapped in Kedro package
 
 ## Overview
 Can we build an accurate machine learning model to predict purchases using clickstream data?
